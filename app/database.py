@@ -1,11 +1,11 @@
-from sqlmodel import create_engine, Session, SQLModel
+from sqlmodel import SQLModel, create_engine, Session
 from app.setting import get_setting
 
-setting = get_setting()
+setting  = get_setting()
 
-engine = create_engine(
+
+engine  = create_engine(
     setting.base_url,
-    connect_args={"check_same_thread" : False}
 )
 
 def create_table():
@@ -17,3 +17,4 @@ def get_session():
     with Session(engine) as session:
 
         yield session
+    

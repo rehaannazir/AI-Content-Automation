@@ -4,29 +4,24 @@ from auth.jwt_handler import decode_access_token
 
 security = HTTPBearer()
 
-def get_current_user(credetials : HTTPAuthorizationCredentials = Depends(security)):
+def current_user(credentials : HTTPAuthorizationCredentials = Depends(security)):
 
-    token = credetials.credentials
+    token = credentials.credentials
 
-    try:
+    payload = decode_access_token(token)
 
-        payload = decode_access_token(token)
-        username = payload.get("sub")
+    if payload is None:
 
-        if not username:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token Invalid or Expired")
 
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Invalid Token"
-            )
-        
-        return username
-    
-    except Exception:
+    username = payload.get("sub")
+
+    if not username:
 
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Token expired or invalid"
-        )
-    
-    
+            status_code= status.HTTP_401_UNAUTHORIZED,
+            detail="Token Invalid"
+            )
+    return username
+
+
