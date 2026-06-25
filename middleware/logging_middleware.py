@@ -8,7 +8,7 @@ async def logging_middleware(request : Request, call_next):
 
     start_time = time.perf_counter()
 
-    response = call_next(request)
+    response = await call_next(request)
 
     actual_time = time.perf_counter() - start_time
 
@@ -16,7 +16,7 @@ async def logging_middleware(request : Request, call_next):
         f"{request.method} "
         f"{request.url} "
         f"{response.status_code} "
-        f"{actual_time}s"
+        f"{actual_time:.4f}s"
     )
 
     return response
