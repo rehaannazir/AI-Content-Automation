@@ -1,7 +1,6 @@
 from sqlmodel import SQLModel, Field
 from typing import Optional
-from pydantic import EmailStr
-from datetime import datetime, UTC
+from datetime import datetime, timezone
 
 
 class File(SQLModel, table=True):
@@ -10,5 +9,5 @@ class File(SQLModel, table=True):
     filename: str
     filepath: str
     file_type: str
-    uploaded_at: datetime = Field(default=datetime.now(UTC))
+    uploaded_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     user_id: str = Field(foreign_key="user.id")
