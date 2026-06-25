@@ -10,9 +10,9 @@ setting = get_setting()
 @lru_cache
 def get_client() -> OpenAI:
 
-    api_keyy = setting.xai_api_key
+    api_key = setting.xai_api_key
 
-    if not api_keyy:
+    if not api_key:
         raise RuntimeError("X_API_KEY is not set yet")
     
     return OpenAI(
@@ -91,7 +91,7 @@ class GenerationService:
         data = GenerationService.parseJSON(raw)
 
         return {
-            "Titles" : data["titles"]
+            "titles" : data["titles"]
         }
 
 
@@ -124,20 +124,20 @@ class GenerationService:
         user_prompt = f"""
     Create a social media post content from the given text. Your response must be in this format:
     {{
-        "Linkedin" : "...",
-        "Instagram" : "...",
-        "Facebook" : "..."
+        "linkedin" : "...",
+        "instagram" : "...",
+        "twitter" : "..."
     }}
 
-    Text = 
+    Text =
     {text}
-""" 
-        
+"""
+
         raw = GenerationService.call_grok(system_prompt, user_prompt)
         data = GenerationService.parseJSON(raw)
 
         return {
-            "Linkedin" : data["Linkedin"],
-            "Instagram" : data["Instagram"],
-            "Facebook" : data["Facebook"]
+            "linkedin" : data["linkedin"],
+            "instagram" : data["instagram"],
+            "twitter" : data["twitter"]
         }
