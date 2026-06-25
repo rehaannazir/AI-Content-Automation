@@ -6,6 +6,7 @@ from auth.dependencies import get_current_user
 from models.user import User
 from schemas.generation_schema import GenerationResponse
 from services.history_service import HistoryService
+from utils.responses import success_response
 
 router = APIRouter(
     prefix="/history",
@@ -62,4 +63,4 @@ def delete_generation(
             detail="Generation not found",
         )
 
-    return {"message": "Generation deleted successfully"}
+    return success_response("Generation deleted successfully")

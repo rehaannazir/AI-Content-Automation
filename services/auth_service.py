@@ -1,36 +1,34 @@
-from sqlmodel import Session, select
+from sqlmodel import Session
 
-from models.user import User
 from auth.passward import hashing_passward, verify_passward
+from repositories.user_repo import UserRepository
+from utils.validators import validate_password
 
 
 class AuthService:
 
     @staticmethod
     def get_user_by_email(session: Session, email: str):
-        return session.exec(select(User).where(User.email == email)).first()
+        return UserRepository.get_user_by_email(session, email)
 
     @staticmethod
     def register_user(session: Session, username: str, email: str, password: str):
+        validate_password(password)
 
-        existing_user = session.exec(
-            select(User).where((User.email == email) | (User.username == username))
-        ).first()
+        existing_email = UserRepository.get_user_by_email(session, email)
+        existing_username = UserRepository.get_user_by_username(session, username)
 
-        if existing_user:
-            return None  # user already exists
+        if existing_email or existing_username:
+            return None
 
+        from models.user import User
         new_user = User(
             username=username,
             email=email,
             passward_hash=hashing_passward(password),
         )
 
-        session.add(new_user)
-        session.commit()
-        session.refresh(new_user)
-
-        return new_user
+        return UserRepository.create_user(session, new_user)
 
     @staticmethod
     def authenticate_user(session: Session, email: str, password: str):
@@ -40,7 +38,7 @@ class AuthService:
         if not user:
             return None
 
-        if not verify_passward(password, user.password_hash):
+        if not verify_passward(password, user.passward_hash):
             return None
 
         return user

@@ -1,5 +1,3 @@
-# app/routers/generate.py
-
 from fastapi import APIRouter, Depends, status
 
 from auth.dependencies import get_current_user
@@ -15,37 +13,30 @@ from schemas.generation_schema import (
     SocialResponse,
 )
 from services.generation_service import GenerationService
+from utils.validators import validate_text
 
 router = APIRouter(prefix="/generate", tags=["AI Generation"])
 
 
 @router.post("/summary", response_model=SummaryResponse, status_code=status.HTTP_200_OK)
-def generate_summary(
-    data: SummaryRequest,
-    current_user: User = Depends(get_current_user),
-):
+def generate_summary(data: SummaryRequest, current_user: User = Depends(get_current_user)):
+    validate_text(data.text)
     return GenerationService.generate_summary(data.text)
 
 
 @router.post("/title", response_model=TitleResponse, status_code=status.HTTP_200_OK)
-def generate_titles(
-    data: TitleRequest,
-    current_user: User = Depends(get_current_user),
-):
+def generate_titles(data: TitleRequest, current_user: User = Depends(get_current_user)):
+    validate_text(data.text)
     return GenerationService.generate_titles(data.text)
 
 
 @router.post("/keywords", response_model=KeywordResponse, status_code=status.HTTP_200_OK)
-def generate_keywords(
-    data: KeywordRequest,
-    current_user: User = Depends(get_current_user),
-):
+def generate_keywords(data: KeywordRequest, current_user: User = Depends(get_current_user)):
+    validate_text(data.text)
     return GenerationService.generate_keywords(data.text)
 
 
 @router.post("/social", response_model=SocialResponse, status_code=status.HTTP_200_OK)
-def generate_social_posts(
-    data: SocialRequest,
-    current_user: User = Depends(get_current_user),
-):
+def generate_social_posts(data: SocialRequest, current_user: User = Depends(get_current_user)):
+    validate_text(data.text)
     return GenerationService.generate_social_posts(data.text)
