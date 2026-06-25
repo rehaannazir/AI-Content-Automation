@@ -4,6 +4,7 @@ from auth.jwt_handler import encode_access_token
 from app.database import get_session
 from schemas.auth_schema import RegisterRequest, LoginRequest, TokenResponse
 from services.auth_service import AuthService
+from utils.responses import success_response
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
@@ -18,7 +19,7 @@ def register_user(reg: RegisterRequest, session: Session = Depends(get_session))
             status_code=status.HTTP_400_BAD_REQUEST, detail="User already regitered"
         )
 
-    return {"message": "User is registered successfully!"}
+    return success_response("User is registered successfully!")
 
 
 @router.post("/login", response_model=TokenResponse, status_code=status.HTTP_200_OK)

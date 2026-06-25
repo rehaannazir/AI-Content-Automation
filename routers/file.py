@@ -16,11 +16,7 @@ def upload_file(
     session: Session = Depends(get_session),
     current_user: User = Depends(get_current_user),
 ):
-    extension = FileService.validate_extension(file.filename)
-    if not extension:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Only txt, pdf and docx files are allowed.")
-
-    file_path = FileService.save_to_disk(file)
+    file_path, extension = FileService.save_to_disk(file)
     return FileService.create_file_record(session, file.filename, file_path, extension, current_user.id)
 
 
