@@ -5,6 +5,8 @@ class Setting(BaseSettings):
 
     base_url : str
     secret_key : str
+    xai_api_key : str
+    grok_model : str
 
     model_config = SettingsConfigDict(env_file=".env")
 

@@ -1,7 +1,7 @@
 from sqlmodel import SQLModel, Field
 from typing import Optional
 from pydantic import EmailStr
-from datetime import datetime, UTC
+from datetime import datetime, timezone
 
 class Generation(SQLModel, table=True):
 
@@ -9,5 +9,5 @@ class Generation(SQLModel, table=True):
     prompt : str
     result : str
     generation_type : str
-    created_at : datetime = Field(default=datetime.now(UTC))
+    created_at : datetime = Field(default_factory= lambda : datetime.now(timezone.utc))
     user_id : str = Field(foreign_key="user.id")

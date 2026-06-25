@@ -1,7 +1,7 @@
 from sqlmodel import SQLModel, Field
 from typing import Optional
 from pydantic import EmailStr
-from datetime import datetime, UTC
+from datetime import datetime, timezone
 
 class User(SQLModel, table=True):
 
@@ -9,4 +9,4 @@ class User(SQLModel, table=True):
     username : str
     email : EmailStr
     passward_hash : str
-    created_at : datetime = Field(default=datetime.now(UTC))
+    created_at : datetime = Field (default_factory = lambda : datetime.now(timezone.utc))
