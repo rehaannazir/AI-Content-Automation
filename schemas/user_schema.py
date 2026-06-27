@@ -23,8 +23,8 @@ class UserResponse(BaseModel):
 
 
 class UserUpdate(BaseModel):
-    name: Optional[str]
-    email: Optional[EmailStr]
+    username: Optional[str] = None
+    email: Optional[EmailStr] = None
 
 
 class TokenResponse(BaseModel):
