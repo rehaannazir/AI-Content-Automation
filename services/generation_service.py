@@ -28,15 +28,15 @@ class GenerationService:
     def call_grok(system_prompt : str, user_prompt : str):
 
         client = get_client()
-        response  = client.responses.create(
-            model= GenerationService.Model,
-            input= [
-                {"role" : "system", "content" : system_prompt},
-                {"role" : "user", "content" : user_prompt}
-            ]
+        response = client.chat.completions.create(
+            model=GenerationService.Model,
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt},
+            ],
         )
 
-        return response.output_text.strip()
+        return response.choices[0].message.content.strip()
     
     @staticmethod
     def parseJSON(text : str) -> Dict[str, Any]:
