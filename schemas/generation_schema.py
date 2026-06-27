@@ -38,12 +38,12 @@ class SocialResponse(BaseModel):
 
 
 class GenerationResponse(BaseModel):
-    id: str
+    id: int
     prompt: str
     result: str
     generation_type: str
     created_at: datetime
-    user_id: str
+    user_id: int
 
 
 class GenerationListResponse(BaseModel):

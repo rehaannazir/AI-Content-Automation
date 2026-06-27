@@ -1,6 +1,6 @@
 from sqlmodel import Session
 
-from auth.passward import hashing_passward, verify_passward
+from auth.passward import hashing_pswd, verify_pswd
 from repositories.user_repo import UserRepository
 from utils.validators import validate_password
 
@@ -25,7 +25,7 @@ class AuthService:
         new_user = User(
             username=username,
             email=email,
-            passward_hash=hashing_passward(password),
+            passward_hash=hashing_pswd(password),
         )
 
         return UserRepository.create_user(session, new_user)
@@ -38,7 +38,7 @@ class AuthService:
         if not user:
             return None
 
-        if not verify_passward(password, user.passward_hash):
+        if not verify_pswd(password, user.passward_hash):
             return None
 
         return user

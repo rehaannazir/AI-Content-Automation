@@ -10,7 +10,7 @@ class FileResponse(BaseModel):
     filepath: str
     file_type: str
     uploaded_at: datetime
-    user_id: str
+    user_id: int
 
 
 class FileListResponse(BaseModel):
